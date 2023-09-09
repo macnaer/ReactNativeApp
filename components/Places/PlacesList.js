@@ -5,8 +5,8 @@ import PlaceItem from "./PlaceItem";
 function PlacesList({ places }) {
   if (!places || places.length === 0) {
     return (
-      <View>
-        <Text>No place found.</Text>
+      <View style={styles.container}>
+        <Text style={styles.text}>No place found.</Text>
       </View>
     );
   }
@@ -21,3 +21,14 @@ function PlacesList({ places }) {
 }
 
 export default PlacesList;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 16,
+  },
+});

@@ -11,21 +11,21 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <>
-      <StatusBar />
+      <StatusBar style="dark" />
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
             name="AllPlaces"
             component={AllPlaces}
             options={({ navigation }) => ({
-              headerRight: ({ tintColor }) => {
+              headerRight: () => (
                 <IconButton
                   icon="add"
                   size={24}
-                  color={tintColor}
+                  color="blue"
                   onPress={() => navigation.navigate("AddPlace")}
-                />;
-              },
+                />
+              ),
             })}
           />
           <Stack.Screen name="AddPlace" component={AddPlace} />

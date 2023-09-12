@@ -5,8 +5,9 @@ import { useState } from "react";
 function PlaceForm() {
   const [enteredTitle, setEnteredTitle] = useState("");
 
-  function changeTitleHandler(text) {
-    setEnteredTitle(text);
+  function changeTitleHandler(enteredText) {
+    console.log("Entered text", enteredText);
+    setEnteredTitle(enteredText);
   }
 
   return (
@@ -16,7 +17,7 @@ function PlaceForm() {
         <TextInput
           value={enteredTitle}
           style={styles.input}
-          onChange={changeTitleHandler}
+          onChangeText={changeTitleHandler}
         />
         <ImagePicker />
       </View>

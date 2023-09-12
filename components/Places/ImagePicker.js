@@ -1,13 +1,16 @@
-import { Aler, Alert, Button, View } from "react-native";
+import { Alert, Button, View, StyleSheet, Text, Image } from "react-native";
 import {
   launchCameraAsync,
   useCameraPermissions,
   PermissionStatus,
 } from "expo-image-picker";
+import { useState } from "react";
 
 function ImagePicker() {
   const [comaraPermissionInformation, requestPermission] =
     useCameraPermissions();
+
+  const [takedImage, setTakedImage] = useState();
 
   async function VerifyPermission() {
     if (comaraPermissionInformation.status === PermissionStatus.UNDETERMINED) {
@@ -16,10 +19,10 @@ function ImagePicker() {
       return permissionResponse.granted;
     }
 
-    if (comaraPermissionInformation.status === PermissionStatus.DENIED) {
-      Alert.alert("Permission denied.", "You nedd to grant access to camera.");
-      return false;
-    }
+    // if (comaraPermissionInformation.status === PermissionStatus.DENIED) {
+    //   Alert.alert("Permission denied.", "You nedd to grant access to camera.");
+    //   return false;
+    // }
 
     return true;
   }
@@ -35,15 +38,42 @@ function ImagePicker() {
       quality: 0.5,
     });
 
-    console.log("Image: ", image);
+    setTakedImage(image.assets[0].uri);
+    console.log(image.assets[0].uri);
+  }
+
+  let imagePreview = <Text>No image teken yet.</Text>;
+
+  if (takedImage) {
+    // imagePreview = <Image source={{ uri: takedImage }} />;
+    imagePreview =
+      "{takedImage && <Image source={{ uri: takedImage }} style={{ width: 200, height: 200 }} />}";
   }
 
   return (
     <View>
-      <View></View>
+      {/* <View style={styles.imagePreview}>{imagePreview}</View> */}
+      {takedImage && (
+        <Image
+          source={{ uri: takedImage }}
+          style={{ width: 200, height: 200 }}
+        />
+      )}
       <Button title="Take photo." onPress={TakePhotoHandler} />
     </View>
   );
 }
 
 export default ImagePicker;
+
+const styles = StyleSheet.create({
+  imagePreview: {
+    width: "100%",
+    height: 200,
+    marginVertical: 8,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "gray",
+    borderRadius: 4,
+  },
+});

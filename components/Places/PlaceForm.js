@@ -1,4 +1,4 @@
-import { ScrollView, Text, TextInput, View } from "react-native";
+import { ScrollView, Text, TextInput, View, StyleSheet } from "react-native";
 import ImagePicker from "../Places/ImagePicker";
 import { useState } from "react";
 

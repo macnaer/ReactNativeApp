@@ -44,21 +44,20 @@ function ImagePicker() {
 
   let imagePreview = <Text>No image teken yet.</Text>;
 
+  //   {takedImage && (
+  //     <Image
+  //       source={{ uri: takedImage }}
+  //       style={{ width: 200, height: 200 }}
+  //     />
+  //   )}
+
   if (takedImage) {
-    // imagePreview = <Image source={{ uri: takedImage }} />;
-    imagePreview =
-      "{takedImage && <Image source={{ uri: takedImage }} style={{ width: 200, height: 200 }} />}";
+    imagePreview = <Image style={styles.image} source={{ uri: takedImage }} />;
   }
 
   return (
     <View>
-      {/* <View style={styles.imagePreview}>{imagePreview}</View> */}
-      {takedImage && (
-        <Image
-          source={{ uri: takedImage }}
-          style={{ width: 200, height: 200 }}
-        />
-      )}
+      <View style={styles.imagePreview}>{imagePreview}</View>
       <Button title="Take photo." onPress={TakePhotoHandler} />
     </View>
   );
@@ -75,5 +74,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "gray",
     borderRadius: 4,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
   },
 });

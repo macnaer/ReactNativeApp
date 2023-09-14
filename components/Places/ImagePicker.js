@@ -5,6 +5,7 @@ import {
   PermissionStatus,
 } from "expo-image-picker";
 import { useState } from "react";
+import OutlinedButton from "../UI/OutlonedButton";
 
 function ImagePicker() {
   const [comaraPermissionInformation, requestPermission] =
@@ -39,7 +40,6 @@ function ImagePicker() {
     });
 
     setTakedImage(image.assets[0].uri);
-    console.log(image.assets[0].uri);
   }
 
   let imagePreview = <Text>No image teken yet.</Text>;
@@ -58,7 +58,9 @@ function ImagePicker() {
   return (
     <View>
       <View style={styles.imagePreview}>{imagePreview}</View>
-      <Button title="Take photo." onPress={TakePhotoHandler} />
+      <OutlinedButton icon="camera" onPress={TakePhotoHandler}>
+        Take photo.
+      </OutlinedButton>
     </View>
   );
 }

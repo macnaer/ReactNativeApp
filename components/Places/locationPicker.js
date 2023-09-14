@@ -36,7 +36,7 @@ function LocationPicker() {
     const location = await getCurrentPositionAsync();
     setPickedLocation({
       lat: location.coords.latitude,
-      lng: location.coords.longtitude,
+      lng: location.coords.longitude,
     });
   }
   function getOnMapHendler() {}

@@ -23,10 +23,10 @@ function LocationPicker() {
       const permissionResponse = await requestPermission();
       return permissionResponse.granted;
     }
-    // if (locationPermissionInformation.status === PermissionStatus.DENIED) {
-    //   Alert.alert("Permisson denied.", "You need get access.");
-    //   return false;
-    // }
+    if (locationPermissionInformation.status === PermissionStatus.DENIED) {
+      Alert.alert("Permisson denied.", "You need get access.");
+      return false;
+    }
     return true;
   }
 

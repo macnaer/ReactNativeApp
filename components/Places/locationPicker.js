@@ -7,11 +7,14 @@ import {
 } from "expo-location";
 import OutlineButton from "../UI/OutlonedButton";
 import { getMapPreview } from "../../utils/location";
+import { useNavigation } from "@react-navigation/native";
 
 function LocationPicker() {
   const [pickedLocation, setPickedLocation] = useState();
   const [locationPermissionInformation, requestPermission] =
     useForegroundPermissions();
+
+  const navigation = useNavigation();
 
   async function VerifyPermissions() {
     if (
@@ -20,10 +23,10 @@ function LocationPicker() {
       const permissionResponse = await requestPermission();
       return permissionResponse.granted;
     }
-    if (locationPermissionInformation.status === PermissionStatus.DENIED) {
-      Alert.alert("Permisson denied.", "You need get access.");
-      return false;
-    }
+    // if (locationPermissionInformation.status === PermissionStatus.DENIED) {
+    //   Alert.alert("Permisson denied.", "You need get access.");
+    //   return false;
+    // }
     return true;
   }
 
@@ -39,7 +42,9 @@ function LocationPicker() {
       lng: location.coords.longitude,
     });
   }
-  function getOnMapHendler() {}
+  function getOnMapHendler() {
+    navigation.navigate("Map");
+  }
 
   let locationPreview = <Text>No location picked yet.</Text>;
 
@@ -50,7 +55,6 @@ function LocationPicker() {
         source={{ uri: getMapPreview(pickedLocation.lat, pickedLocation.lng) }}
       />
     );
-    console.log("locationPreview ", locationPreview);
   }
 
   return (

@@ -19,34 +19,33 @@ function Map({ navigation }) {
     setSelectedLocation({ lat: lat, lug: lug });
   }
 
-  const savePickedLockationHandler = useCallback(
-    () => {
-      if (!selectedLocation) {
-        Alert.alert("No location selected.", "You have to select location.");
-      }
+  const savePickedLockationHandler = useCallback(() => {
+    if (!selectedLocation) {
+      Alert.alert(
+        "No location picked!",
+        "You have to pick a location (by tapping on the map) first!"
+      );
       return;
-    },
-    navigation.navigate(
-      "AddPlace",
-      {
-        pickedLat: selectedLocation.lat,
-        pickedLug: selectedLocation.lug,
-      }[(navigation, selectedLocation)]
-    )
-  );
+    }
+
+    navigation.navigate("AddPlace", {
+      pickedLat: selectedLocation.lat,
+      pickedLng: selectedLocation.lng,
+    });
+  }, [navigation, selectedLocation]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: ({ blue }) => {
+      headerRight: ({ blue }) => (
         <IconButton
           icon="save"
           size={24}
-          color="blue"
+          color={"blue"}
           onPress={savePickedLockationHandler}
-        />;
-      },
+        />
+      ),
     });
-  });
+  }, [navigation, savePickedLockationHandler]);
 
   return (
     <MapView

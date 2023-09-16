@@ -1,27 +1,27 @@
-import { View, StyleSheet, Alert, Image, Text } from "react-native";
 import { useEffect, useState } from "react";
+import { Alert, View, StyleSheet, Image, Text } from "react-native";
 import {
   getCurrentPositionAsync,
   useForegroundPermissions,
   PermissionStatus,
 } from "expo-location";
-import OutlineButton from "../UI/OutlonedButton";
-import { getMapPreview } from "../../utils/location";
 import {
   useNavigation,
-  useIsFocused,
   useRoute,
+  useIsFocused,
 } from "@react-navigation/native";
+import OutlonedButton from "../UI/OutlonedButton";
+import { getMapPreview } from "../../utils/location";
 
 function LocationPicker() {
   const [pickedLocation, setPickedLocation] = useState();
-  const [locationPermissionInformation, requestPermission] =
-    useForegroundPermissions();
-
   const isFocused = useIsFocused();
 
   const navigation = useNavigation();
   const route = useRoute();
+
+  const [locationPermissionInformation, requestPermission] =
+    useForegroundPermissions();
 
   useEffect(() => {
     if (isFocused && route.params) {
@@ -32,22 +32,30 @@ function LocationPicker() {
       setPickedLocation(mapPickedLocation);
     }
   }, [route, isFocused]);
-  async function VerifyPermissions() {
+
+  async function verifyPermissions() {
     if (
       locationPermissionInformation.status === PermissionStatus.UNDETERMINED
     ) {
       const permissionResponse = await requestPermission();
+
       return permissionResponse.granted;
     }
+
     if (locationPermissionInformation.status === PermissionStatus.DENIED) {
-      Alert.alert("Permisson denied.", "You need get access.");
+      Alert.alert(
+        "Insufficient Permissions!",
+        "You need to grant location permissions to use this app."
+      );
       return false;
     }
+
     return true;
   }
 
   async function getLocationHandler() {
-    const hasPermission = await VerifyPermissions();
+    const hasPermission = await verifyPermissions();
+
     if (!hasPermission) {
       return;
     }
@@ -58,7 +66,8 @@ function LocationPicker() {
       lng: location.coords.longitude,
     });
   }
-  function getOnMapHendler() {
+
+  function pickOnMapHandler() {
     navigation.navigate("Map");
   }
 
@@ -68,7 +77,9 @@ function LocationPicker() {
     locationPreview = (
       <Image
         style={styles.image}
-        source={{ uri: getMapPreview(pickedLocation.lat, pickedLocation.lng) }}
+        source={{
+          uri: getMapPreview(pickedLocation.lat, pickedLocation.lng),
+        }}
       />
     );
   }
@@ -76,13 +87,13 @@ function LocationPicker() {
   return (
     <View>
       <View style={styles.mapPreview}>{locationPreview}</View>
-      <View style={styles.action}>
-        <OutlineButton icon="location" onPress={getLocationHandler}>
-          Locate user
-        </OutlineButton>
-        <OutlineButton icon="map" onPress={getOnMapHendler}>
-          Pick on a map
-        </OutlineButton>
+      <View style={styles.actions}>
+        <OutlonedButton icon="location" onPress={getLocationHandler}>
+          Locate User
+        </OutlonedButton>
+        <OutlonedButton icon="map" onPress={pickOnMapHandler}>
+          Pick on Map
+        </OutlonedButton>
       </View>
     </View>
   );
@@ -96,11 +107,12 @@ const styles = StyleSheet.create({
     height: 200,
     marginVertical: 8,
     justifyContent: "center",
-    alignContent: "center",
+    alignItems: "center",
     backgroundColor: "gray",
     borderRadius: 4,
+    overflow: "hidden",
   },
-  action: {
+  actions: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
@@ -108,5 +120,6 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+    // borderRadius: 4
   },
 });

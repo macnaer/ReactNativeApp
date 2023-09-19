@@ -15,8 +15,8 @@ function Map({ navigation }) {
 
   function selectedLocationHandler(event) {
     const lat = event.nativeEvent.coordinate.latitude;
-    const lug = event.nativeEvent.coordinate.longitude;
-    setSelectedLocation({ lat: lat, lug: lug });
+    const lng = event.nativeEvent.coordinate.longitude;
+    setSelectedLocation({ lat: lat, lng: lng });
   }
 
   const savePickedLockationHandler = useCallback(() => {
@@ -57,7 +57,7 @@ function Map({ navigation }) {
           title="Picked place"
           coordinate={{
             latitude: selectedLocation.lat,
-            longitude: selectedLocation.lug,
+            longitude: selectedLocation.lng,
           }}
         />
       )}

@@ -10,10 +10,11 @@ import {
   useRoute,
   useIsFocused,
 } from "@react-navigation/native";
-import OutlonedButton from "../UI/OutlonedButton";
-import { getMapPreview } from "../../utils/location";
 
-function LocationPicker() {
+import OutlinedButton from "../UI/OutlinedButton";
+import { getAddress, getMapPreview } from "../../utils/location";
+
+function LocationPicker({ onPickLocation }) {
   const [pickedLocation, setPickedLocation] = useState();
   const isFocused = useIsFocused();
 
@@ -32,6 +33,20 @@ function LocationPicker() {
       setPickedLocation(mapPickedLocation);
     }
   }, [route, isFocused]);
+
+  useEffect(() => {
+    async function handleLocation() {
+      if (pickedLocation) {
+        const address = await getAddress(
+          pickedLocation.lat,
+          pickedLocation.lng
+        );
+        onPickLocation({ ...pickedLocation, address: address });
+      }
+    }
+
+    handleLocation();
+  }, [pickedLocation, onPickLocation]);
 
   async function verifyPermissions() {
     if (
@@ -88,12 +103,12 @@ function LocationPicker() {
     <View>
       <View style={styles.mapPreview}>{locationPreview}</View>
       <View style={styles.actions}>
-        <OutlonedButton icon="location" onPress={getLocationHandler}>
+        <OutlinedButton icon="location" onPress={getLocationHandler}>
           Locate User
-        </OutlonedButton>
-        <OutlonedButton icon="map" onPress={pickOnMapHandler}>
+        </OutlinedButton>
+        <OutlinedButton icon="map" onPress={pickOnMapHandler}>
           Pick on Map
-        </OutlonedButton>
+        </OutlinedButton>
       </View>
     </View>
   );

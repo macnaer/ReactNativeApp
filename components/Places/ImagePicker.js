@@ -1,34 +1,40 @@
-import { Alert, Button, View, StyleSheet, Text, Image } from "react-native";
+import { Alert, Image, StyleSheet, Text, View } from "react-native";
 import {
   launchCameraAsync,
   useCameraPermissions,
   PermissionStatus,
 } from "expo-image-picker";
 import { useState } from "react";
-import OutlinedButton from "../UI/OutlonedButton";
 
-function ImagePicker() {
-  const [comaraPermissionInformation, requestPermission] =
+import OutlinedButton from "../UI/OutlinedButton";
+
+function ImagePicker({ onTakeImage }) {
+  const [pickedImage, setPickedImage] = useState();
+
+  const [cameraPermissionInformation, requestPermission] =
     useCameraPermissions();
 
-  const [takedImage, setTakedImage] = useState();
-
-  async function VerifyPermission() {
-    if (comaraPermissionInformation.status === PermissionStatus.UNDETERMINED) {
+  async function verifyPermissions() {
+    if (cameraPermissionInformation.status === PermissionStatus.UNDETERMINED) {
       const permissionResponse = await requestPermission();
 
       return permissionResponse.granted;
     }
 
-    // if (comaraPermissionInformation.status === PermissionStatus.DENIED) {
-    //   Alert.alert("Permission denied.", "You nedd to grant access to camera.");
-    //   return false;
-    // }
+    if (cameraPermissionInformation.status === PermissionStatus.DENIED) {
+      Alert.alert(
+        "Insufficient Permissions!",
+        "You need to grant camera permissions to use this app."
+      );
+      return false;
+    }
 
     return true;
   }
-  async function TakePhotoHandler() {
-    const hasPermission = await VerifyPermission();
+
+  async function takeImageHandler() {
+    const hasPermission = await verifyPermissions();
+
     if (!hasPermission) {
       return;
     }
@@ -39,27 +45,21 @@ function ImagePicker() {
       quality: 0.5,
     });
 
-    setTakedImage(image.assets[0].uri);
+    setPickedImage(image.uri);
+    onTakeImage(image.uri);
   }
 
-  let imagePreview = <Text>No image teken yet.</Text>;
+  let imagePreview = <Text>No image taken yet.</Text>;
 
-  //   {takedImage && (
-  //     <Image
-  //       source={{ uri: takedImage }}
-  //       style={{ width: 200, height: 200 }}
-  //     />
-  //   )}
-
-  if (takedImage) {
-    imagePreview = <Image style={styles.image} source={{ uri: takedImage }} />;
+  if (pickedImage) {
+    imagePreview = <Image style={styles.image} source={{ uri: pickedImage }} />;
   }
 
   return (
     <View>
       <View style={styles.imagePreview}>{imagePreview}</View>
-      <OutlinedButton icon="camera" onPress={TakePhotoHandler}>
-        Take photo.
+      <OutlinedButton icon="camera" onPress={takeImageHandler}>
+        Take Image
       </OutlinedButton>
     </View>
   );
@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "gray",
     borderRadius: 4,
+    overflow: "hidden",
   },
   image: {
     width: "100%",

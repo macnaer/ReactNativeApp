@@ -26,12 +26,10 @@ function LocationPicker({ onPickLocation }) {
 
   useEffect(() => {
     if (isFocused && route.params) {
-      console.log("route.params ", route.params);
       const mapPickedLocation = {
         lat: route.params.pickedLat,
         lng: route.params.pickedLng,
       };
-      console.log("mapPickedLocation ", mapPickedLocation);
       setPickedLocation(mapPickedLocation);
     }
   }, [route, isFocused]);
@@ -39,7 +37,6 @@ function LocationPicker({ onPickLocation }) {
   useEffect(() => {
     async function handleLocation() {
       if (pickedLocation) {
-        console.log("pickedLocation ", pickedLocation);
         const address = await getAddress(
           pickedLocation.lat,
           pickedLocation.lng
@@ -79,7 +76,6 @@ function LocationPicker({ onPickLocation }) {
     }
 
     const location = await getCurrentPositionAsync();
-    console.log("location ", location.coords);
     setPickedLocation({
       lat: location.coords.latitude,
       lng: location.coords.longitude,

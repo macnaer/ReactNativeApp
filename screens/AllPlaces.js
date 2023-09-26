@@ -14,7 +14,7 @@ function AllPlaces({ route }) {
       setLoadedPlaces(places);
     }
 
-    if (!isFocused) {
+    if (isFocused) {
       loadedPlaces();
     }
   }, [isFocused]);

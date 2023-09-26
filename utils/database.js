@@ -30,11 +30,16 @@ export function Init() {
 
 export function intertPlace(place) {
   const promise = new Promise((resolve, rejecet) => {
-    console.log("intertPlace ", place);
     database.transaction((tx) => {
       tx.executeSql(
         `INSERT INTO places (title, imageUrl, address, lat, lng) VALUES(?, ?, ?, ?, ?)`,
-        [place.title, place.imageUrl, place.address, place.lat, place.lng],
+        [
+          place.title,
+          place.imageUrl,
+          place.address,
+          place.loaction.lat,
+          place.loaction.lng,
+        ],
         [],
         (_, result) => {
           resolve(result);

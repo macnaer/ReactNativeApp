@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ScrollView, Image, View, Text, StyleSheet } from "react-native";
 
 import OutlinedButton from "../components/UI/OutlinedButton";
-import { fetchPlaces } from "../utils/database";
+import { fecthPlaceDatails } from "../utils/database";
 
 function PlaceDetails({ route, navigation }) {
   const [fetchedPlace, setFetchedPlace] = useState();
@@ -13,7 +13,7 @@ function PlaceDetails({ route, navigation }) {
 
   useEffect(() => {
     async function loadPlaceData() {
-      const place = await fetchPlaces(selctedPlaceId);
+      const place = await fecthPlaceDatails(selctedPlaceId);
       setFetchedPlace(place);
       navigation.setOptions({
         title: place.title,
@@ -22,7 +22,7 @@ function PlaceDetails({ route, navigation }) {
     loadPlaceData();
   }, [selctedPlaceId]);
 
-  if (!fetchPlaces) {
+  if (!fetchedPlace) {
     return (
       <View>
         <Text>Loading place ...</Text>

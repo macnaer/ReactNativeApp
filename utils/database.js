@@ -1,116 +1,116 @@
 import * as SQLite from "expo-sqlite";
 import { Place } from "../models/place";
 
-const database = SQLite.openDatabase("placeAppv1.db");
+const database = SQLite.openDatabase("placeAppv2.db");
 
 export function Init() {
-  const promise = new Promise((resolve, rejecet) => {
+  const promise = new Promise((resolve, reject) => {
     database.transaction((tx) => {
       tx.executeSql(
         `CREATE TABLE IF NOT EXISTS places (
-                    id INTEGER PRIMARY KEY NOT NULL,
-                    title TEXT NOT NULL,
-                    imageUrl TEXT NOT NULL,
-                    address TEXT NOT NULL,
-                    lat REAL NOT NULL,
-                    lng REAL NOT NULL
-                )`,
+          id INTEGER PRIMARY KEY NOT NULL,
+          title TEXT NOT NULL,
+          imageUri TEXT NOT NULL,
+          address TEXT NOT NULL,
+          lat REAL NOT NULL,
+          lng REAL NOT NULL
+        )`,
         [],
         () => {
           resolve();
         },
         (_, error) => {
-          rejecet(error);
+          reject(error);
         }
       );
     });
   });
+
   return promise;
 }
 
 export function intertPlace(place) {
-  const promise = new Promise((resolve, rejecet) => {
+  const promise = new Promise((resolve, reject) => {
     database.transaction((tx) => {
       tx.executeSql(
-        `INSERT INTO places (title, imageUrl, address, lat, lng) VALUES(?, ?, ?, ?, ?)`,
+        `INSERT INTO places (title, imageUri, address, lat, lng) VALUES (?, ?, ?, ?, ?)`,
         [
           place.title,
-          place.imageUrl,
+          place.imageUri,
           place.address,
-          place.loaction.lat,
-          place.loaction.lng,
+          place.location.lat,
+          place.location.lng,
         ],
-        [],
         (_, result) => {
           resolve(result);
         },
         (_, error) => {
-          rejecet(error);
+          reject(error);
         }
       );
     });
   });
+
   return promise;
 }
 
 export function fetchPlaces() {
-  const promise = new Promise((resolve, rejecet) => {
+  const promise = new Promise((resolve, reject) => {
     database.transaction((tx) => {
       tx.executeSql(
-        `SELECT * FROM places`,
+        "SELECT * FROM places",
         [],
         (_, result) => {
           const places = [];
-          for (const item of result.rows._array) {
+
+          for (const dp of result.rows._array) {
             places.push(
               new Place(
-                item.title,
-                item.imageUrl,
+                dp.title,
+                dp.imageUri,
                 {
-                  address: item.address,
-                  lat: item.lat,
-                  lng: item.lng,
+                  address: dp.address,
+                  lat: dp.lat,
+                  lng: dp.lng,
                 },
-                item.id
+                dp.id
               )
             );
           }
           resolve(places);
         },
         (_, error) => {
-          rejecet(error);
+          reject(error);
         }
       );
     });
   });
+
   return promise;
 }
 
 export function fecthPlaceDatails(id) {
-  const promise = new Promise((resolve, rejecet) => {
+  const promise = new Promise((resolve, reject) => {
     database.transaction((tx) => {
       tx.executeSql(
-        `SELECT * FROM places WHERE id = ?`,
+        "SELECT * FROM places WHERE id = ?",
         [id],
         (_, result) => {
           const dbPlace = result.rows._array[0];
           const place = new Place(
             dbPlace.title,
-            dbPlace.imageUrl,
-            {
-              lat: dbPlace.lat,
-              lng: dbPlace.lng,
-              address: dbPlace.address,
-            },
+            dbPlace.imageUri,
+            { lat: dbPlace.lat, lng: dbPlace.lng, address: dbPlace.address },
             dbPlace.id
           );
           resolve(place);
         },
         (_, error) => {
-          rejecet(error);
+          reject(error);
         }
       );
     });
   });
+
   return promise;
 }

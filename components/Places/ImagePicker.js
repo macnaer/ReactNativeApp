@@ -21,13 +21,13 @@ function ImagePicker({ onTakeImage }) {
       return permissionResponse.granted;
     }
 
-    if (cameraPermissionInformation.status === PermissionStatus.DENIED) {
-      Alert.alert(
-        "Insufficient Permissions!",
-        "You need to grant camera permissions to use this app."
-      );
-      return false;
-    }
+    // if (cameraPermissionInformation.status === PermissionStatus.DENIED) {
+    //   Alert.alert(
+    //     "Insufficient Permissions!",
+    //     "You need to grant camera permissions to use this app."
+    //   );
+    //   return false;
+    // }
 
     return true;
   }

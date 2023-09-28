@@ -57,13 +57,13 @@ function LocationPicker({ onPickLocation }) {
       return permissionResponse.granted;
     }
 
-    if (locationPermissionInformation.status === PermissionStatus.DENIED) {
-      Alert.alert(
-        "Insufficient Permissions!",
-        "You need to grant location permissions to use this app."
-      );
-      return false;
-    }
+    // if (locationPermissionInformation.status === PermissionStatus.DENIED) {
+    //   Alert.alert(
+    //     "Insufficient Permissions!",
+    //     "You need to grant location permissions to use this app."
+    //   );
+    //   return false;
+    // }
 
     return true;
   }

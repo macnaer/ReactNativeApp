@@ -1,5 +1,5 @@
+import { useNavigation } from "@react-navigation/native";
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { useNavigation } from "@react-navigation/core";
 
 import PlaceItem from "./PlaceItem";
 
@@ -7,7 +7,6 @@ function PlacesList({ places }) {
   const navigation = useNavigation();
 
   function selectPlaceHandler(id) {
-    console.log("selectPlaceHandler ", id);
     navigation.navigate("PlaceDetails", {
       placeId: id,
     });
@@ -15,8 +14,8 @@ function PlacesList({ places }) {
 
   if (!places || places.length === 0) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.text}>No place found.</Text>
+      <View style={styles.fallbackContainer}>
+        <Text style={styles.fallbackText}>No places added yet!</Text>
       </View>
     );
   }
@@ -36,15 +35,16 @@ function PlacesList({ places }) {
 export default PlacesList;
 
 const styles = StyleSheet.create({
-  container: {
+  list: {
+    margin: 24,
+  },
+  fallbackContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  text: {
+  fallbackText: {
     fontSize: 16,
-  },
-  list: {
-    margin: 24,
+    color: "white",
   },
 });

@@ -8,14 +8,13 @@ function AllPlaces({ route }) {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    async function loadedPlaces() {
+    async function loadPlaces() {
       const places = await fetchPlaces();
-      console.log("Plases from db => ", places);
       setLoadedPlaces(places);
     }
 
     if (isFocused) {
-      loadedPlaces();
+      loadPlaces();
     }
   }, [isFocused]);
 

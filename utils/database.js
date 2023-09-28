@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 import { Place } from "../models/place";
 
-const database = SQLite.openDatabase("placeAppl.db");
+const database = SQLite.openDatabase("placeAppv1.db");
 
 export function Init() {
   const promise = new Promise((resolve, rejecet) => {
@@ -93,7 +93,18 @@ export function fecthPlaceDatails(id) {
         `SELECT * FROM places WHERE id = ?`,
         [id],
         (_, result) => {
-          resolve(result);
+          const dbPlace = result.rows._array[0];
+          const place = new Place(
+            dbPlace.title,
+            dbPlace.imageUrl,
+            {
+              lat: dbPlace.lat,
+              lng: dbPlace.lng,
+              address: dbPlace.address,
+            },
+            dbPlace.id
+          );
+          resolve(place);
         },
         (_, error) => {
           rejecet(error);

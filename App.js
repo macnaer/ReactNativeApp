@@ -37,6 +37,7 @@ export default function App() {
             name="AllPlaces"
             component={AllPlaces}
             options={({ navigation }) => ({
+              title: "Favorite places",
               headerRight: () => (
                 <IconButton
                   icon="add"
@@ -47,7 +48,11 @@ export default function App() {
               ),
             })}
           />
-          <Stack.Screen name="AddPlace" component={AddPlace} />
+          <Stack.Screen
+            name="AddPlace"
+            component={AddPlace}
+            options={{ title: "Add new place" }}
+          />
           <Stack.Screen name="Map" component={Map} />
           <Stack.Screen
             name="PlaceDetails"

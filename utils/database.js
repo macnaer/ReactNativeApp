@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 import { Place } from "../models/place";
 
-const database = SQLite.openDatabase("placeAppv2.db");
+const database = SQLite.openDatabase("placeAppv3.db");
 
 export function Init() {
   const promise = new Promise((resolve, reject) => {
@@ -33,10 +33,10 @@ export function intertPlace(place) {
   const promise = new Promise((resolve, reject) => {
     database.transaction((tx) => {
       tx.executeSql(
-        `INSERT INTO places (title, imageUri, address, lat, lng) VALUES (?, ?, ?, ?, ?)`,
+        `INSERT INTO places (title, imageUrl, address, lat, lng) VALUES (?, ?, ?, ?, ?)`,
         [
           place.title,
-          place.imageUri,
+          place.imageUrl,
           place.address,
           place.location.lat,
           place.location.lng,

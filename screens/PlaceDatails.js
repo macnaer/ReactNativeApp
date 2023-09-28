@@ -8,6 +8,7 @@ function PlaceDetails({ route, navigation }) {
   const [fetchedPlace, setFetchedPlace] = useState();
 
   function showOnMapHandler() {
+    console.log(fetchedPlace);
     navigation.navigate("Map", {
       initialLat: fetchedPlace.location.lat,
       initialLng: fetchedPlace.location.lng,
